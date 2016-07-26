@@ -23,6 +23,7 @@ function getColorFromTipoDenuncia(tipodenuncia) {
     }
 }
 
+//Retorna idade em anos de acordo com a data de nascimento passada por parâmetro
 function getAge(birthdate) {
     var today = new Date(Date.now());
     var diff = new Date(+today).setHours(12) - new Date(+birthdate).setHours(12);
@@ -49,9 +50,14 @@ function placeMarkerByJson(json) {
             new google.maps.Point(0, 0),
             new google.maps.Point(12, 35));
 
+    var targetMap = map_ref;
+    
+    if(heatmap_activated)
+        targetMap = null;
+    
     var markOptions = {
         position: location,
-        map: map_ref,
+        map: targetMap,
         title: json.descricao,
         icon: pinImage,
         shadow: pinShadow
@@ -107,8 +113,8 @@ function requestComplaints(successCallback, url) {
     });
 }
 
+//Filtra os marcadores atuais pelo tipo da denúncia selecionada através de um checkbox
 function filterMarksByType() {
-    console.log(denuncias);
     setMapOnAllMarkers(null);
     cleanMarks();
     cleanCoordinates();
@@ -116,7 +122,7 @@ function filterMarksByType() {
     var ag = document.getElementById('agressao');
     var as = document.getElementById('assedio');
     var es = document.getElementById('estupro');
-    
+    var denunciaProcessed = 0;
     denuncias.forEach(function (denuncia) {
         if((ag.checked && denuncia.tipoDenuncia === 'AGRESSAO') 
                 || (as.checked && denuncia.tipoDenuncia === 'ASSEDIO') 
@@ -126,8 +132,12 @@ function filterMarksByType() {
                         denuncia.ponto.coordinates.coordinates[0].y));
                         
                     placeMarkerByJson(denuncia);
-        
+                    
                 }
+        denunciaProcessed++;
+        
+        if(denunciaProcessed === denuncias.length && heatmap_activated)
+                activeHeatMap();
     });
 }
 
@@ -160,10 +170,16 @@ function loadMarks(url) {
     cleanCoordinates();
     requestComplaints(function (data) {
         denuncias = data;
+        var denunciaProcessed = 0;
         data.forEach(function (denuncia) {
             addCoordinate(new google.maps.LatLng(denuncia.ponto.coordinates.coordinates[0].x, denuncia.ponto.coordinates.coordinates[0].y));
             placeMarkerByJson(denuncia);
+            denunciaProcessed++;
+            
+            if(denunciaProcessed === data.length && heatmap_activated)
+                activeHeatMap();
         });
+        
     }, url);
 }
 

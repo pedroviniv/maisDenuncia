@@ -28,7 +28,7 @@ public class LoginBo
                 return usuario;
             }
         }
-        throw new LoginException("Email e/ou Senha incorreto(as).");
+        throw new LoginException("Usuário e/ou Senha incorreto(as).");
     }
     
 }

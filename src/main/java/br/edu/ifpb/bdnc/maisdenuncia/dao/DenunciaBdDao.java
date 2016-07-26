@@ -83,7 +83,7 @@ public class DenunciaBdDao implements DenunciaDao
     public List<Denuncia> listar()
     {
         List<Denuncia> denuncias = new ArrayList<>();
-        String sql = "SELECT * FROM denuncia";
+        String sql = "SELECT * FROM denuncia ORDER BY id";
         
         try
         {

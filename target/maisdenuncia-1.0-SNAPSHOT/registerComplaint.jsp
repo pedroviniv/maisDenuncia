@@ -28,6 +28,14 @@
 
 	
 	<div class="container" style="margin: 100px auto; border: 1px solid #eee; padding: 20px 20px 0px 20px; border-radius: 8px;">
+            
+                <c:if test="${requestScope.success}">
+                    <div class="12u 12u(xsmall) alert success"><h4 style="margin: 0px;">Cadastro Realizado com Sucesso!</h4></div>
+                </c:if>
+                <c:if test="${requestScope.success == false}">
+                    <div class="12u 12u(xsmall) alert danger"><h4 style="margin: 0px;">Cadastro Realizado com Sucesso!</h4></div>
+                </c:if>
+                    
 		<h3>Clique no local onde você presenciou ou foi vítima do acontecimento!</h3>
                 <input id="pac-input" class="search-input " type="text" name="" placeholder="Search a place!">
 		<div id="map" style="height: 400px; background: lightblue;">
@@ -80,12 +88,6 @@
 				</div>
 			</div>
 		</form>
-                <c:if test="${requestScope.success}">
-                    <div class="12u 12u(xsmall) alert success"><h4 style="margin: 0px;">Cadastro Realizado com Sucesso!</h4></div>
-                </c:if>
-                <c:if test="${requestScope.success == false}">
-                    <div class="12u 12u(xsmall) alert danger"><h4 style="margin: 0px;">Cadastro Realizado com Sucesso!</h4></div>
-                </c:if>
                  <div id="alertPlaceNotSelected" class="12u 12u(xsmall) alert danger hidden"><h4 style="margin: 0px;">Por favor, marque o local do ocorrido!</h4></div>
                  <div id="alertDenunciaNotSelected" class="12u 12u(xsmall) alert danger hidden"><h4 style="margin: 0px;">Por favor, selecione o tipo da denúncia!</h4></div>
 	</div>
