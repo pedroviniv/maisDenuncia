@@ -33,8 +33,8 @@ public class DenunciaBdDao implements DenunciaDao
     @Override
     public void add(Denuncia denuncia)
     {
-        String sql = "INSERT INTO denuncia(descricao, id_tipodenuncia, data, id_tipodenunciante, email_usuario, ponto)"
-                + " VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO denuncia(descricao, id_tipodenuncia, data, id_tipodenunciante, email_usuario, ponto, ehanonimo)"
+                + " VALUES(?,?,?,?,?,?,?) RETURNING id";
         
         try
         {
@@ -47,8 +47,12 @@ public class DenunciaBdDao implements DenunciaDao
             pstm.setInt(i++, denuncia.getTipoDenunciante().getValue());
             pstm.setString(i++, denuncia.getDenunciante().getEmail());
             pstm.setString(i++, new WKTWriter().write(denuncia.getPonto()));
+            pstm.setBoolean(i++, denuncia.getEhAnonimo());
             
-            pstm.executeUpdate();
+            ResultSet rs = pstm.executeQuery();
+          
+            if(rs.next())
+                denuncia.setId(rs.getInt("id"));
         }
         catch (ClassNotFoundException | SQLException ex)
         {
@@ -106,13 +110,14 @@ public class DenunciaBdDao implements DenunciaDao
         TipoDenuncia tipoDenuncia = TipoDenuncia.get(rs.getInt("id_tipodenuncia"));
         TipoDenunciante tipoDenunciante = TipoDenunciante.get(rs.getInt("id_tipodenunciante"));
         LocalDate data = rs.getDate("data").toLocalDate();
+        boolean ehAnonimo = rs.getBoolean("ehAnonimo");
         try
         {
             Point point = (Point) new WKTReader().read(rs.getString("ponto"));
             
             Usuario denunciante = new UsuarioBdDao().get(rs.getString("email_usuario"));
         
-            Denuncia denuncia = new Denuncia(id,descricao, tipoDenuncia, denunciante, tipoDenunciante, point, data);
+            Denuncia denuncia = new Denuncia(id,descricao, tipoDenuncia, denunciante, tipoDenunciante, point, data, ehAnonimo);
 
             return denuncia;
         }

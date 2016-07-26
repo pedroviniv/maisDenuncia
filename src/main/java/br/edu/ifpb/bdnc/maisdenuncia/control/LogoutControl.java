@@ -35,10 +35,10 @@ public class LogoutControl extends HttpServlet
     {        
         HttpSession session = request.getSession();
         if(session.getAttribute("loggedUser") == null)
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("index.jsp");
         else{
             session.invalidate();
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("index.jsp");
         }
         
     }

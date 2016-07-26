@@ -15,11 +15,8 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -50,14 +47,23 @@ public class RegisterComplaintControl extends HttpServlet
         int tipoDenuncia = Integer.valueOf(request.getParameter("complaintType"));
         int tipoDenunciante = Integer.valueOf(request.getParameter("userType"));
         
-        String lat = request.getParameter("placeLat");
-        String lng = request.getParameter("placeLng");
+        String checkedEhAnonimo = request.getParameter("ehAnonimo");
+        
+        System.out.println("!!!!!"+checkedEhAnonimo+"!!!!!");
+        
+        boolean ehAnonimo = true;
+        
+        if(checkedEhAnonimo == null)
+            ehAnonimo = false;
+        
+        String lat = request.getParameter("lat");
+        String lng = request.getParameter("lng");
         
         String wktPoint = "POINT("+lat+" "+lng+")";
         
         WKTReader reader = new WKTReader();
         
-        RequestDispatcher rd = request.getRequestDispatcher("registrarDenuncia.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("registerComplaint.jsp");
             
         try {
             
@@ -65,7 +71,7 @@ public class RegisterComplaintControl extends HttpServlet
             LocalDate data = DateUtils.fromBrazilPattern(request.getParameter("complaintDate"));
             Point p = (Point) reader.read(wktPoint);     
             
-            Denuncia d = new Denuncia(descricao,TipoDenuncia.get(tipoDenuncia),loggedUser,TipoDenunciante.get(tipoDenunciante),p,data);
+            Denuncia d = new Denuncia(descricao,TipoDenuncia.get(tipoDenuncia),loggedUser,TipoDenunciante.get(tipoDenunciante),p,data,ehAnonimo);
             
             DenunciaBo bo = new DenunciaBo();
             

@@ -40,7 +40,6 @@ public class LoginControl extends HttpServlet
         LoginBo bo = new LoginBo();
         
         RequestDispatcher dispatcher;
-        String url = "user.jsp";
         
         try{
             Usuario usuario = bo.logIn(email, senha);
@@ -48,10 +47,9 @@ public class LoginControl extends HttpServlet
             request.setAttribute("success", true);
             session.setAttribute("loggedUser", usuario);
         }catch(LoginException ex){
-            url = "login.jsp";
             request.setAttribute("success", false);
         }finally{
-            dispatcher = request.getRequestDispatcher(url);
+            dispatcher = request.getRequestDispatcher("index.jsp");
             dispatcher.forward(request, response);
         }
     }

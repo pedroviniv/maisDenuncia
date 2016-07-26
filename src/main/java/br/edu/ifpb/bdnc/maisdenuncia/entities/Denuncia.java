@@ -25,17 +25,19 @@ public class Denuncia implements Serializable
     private Point            ponto;
     private TipoDenunciante  tipoDenunciante;
     private Usuario          denunciante;
+    private boolean          ehAnonimo;
     
-    public Denuncia(String descricao, TipoDenuncia tipoDenuncia, Usuario denunciante, TipoDenunciante tipoDenunciante, Point ponto, LocalDate data){
+    public Denuncia(String descricao, TipoDenuncia tipoDenuncia, Usuario denunciante, TipoDenunciante tipoDenunciante, Point ponto, LocalDate data, boolean ehAnonimo){
         this.descricao        = descricao;
         this.tipoDenuncia     = tipoDenuncia;
         this.tipoDenunciante  = tipoDenunciante;
         this.ponto            = ponto;
         this.denunciante      = denunciante;
         this.data             = data;
+        this.ehAnonimo        = ehAnonimo;
     }
     
-    public Denuncia(int id, String descricao, TipoDenuncia tipoDenuncia, Usuario denunciante, TipoDenunciante tipoDenunciante, Point ponto, LocalDate data){
+    public Denuncia(int id, String descricao, TipoDenuncia tipoDenuncia, Usuario denunciante, TipoDenunciante tipoDenunciante, Point ponto, LocalDate data, boolean ehAnonimo){
         this.descricao        = descricao;
         this.tipoDenuncia     = tipoDenuncia;
         this.tipoDenunciante  = tipoDenunciante;
@@ -43,15 +45,25 @@ public class Denuncia implements Serializable
         this.denunciante      = denunciante;
         this.id               = id;
         this.data             = data;
+        this.ehAnonimo        = ehAnonimo;
     }
     
     public int getId(){
         return this.id;
     }
+    
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
     public String getDescricao()
     {
         return this.descricao;
+    }
+    
+    public boolean getEhAnonimo(){
+        return this.ehAnonimo;
     }
 
     public TipoDenuncia getTipoDenuncia()
@@ -85,6 +97,8 @@ public class Denuncia implements Serializable
     {
         return "Denuncia{" + "descricao=" + descricao + ", tipoDenuncia=" + tipoDenuncia + ", ponto=" + getWKTGeometry() + ", tipoDenunciante=" + tipoDenunciante + ", denunciante=" + denunciante + '}';
     }
+
+    
 
     
     

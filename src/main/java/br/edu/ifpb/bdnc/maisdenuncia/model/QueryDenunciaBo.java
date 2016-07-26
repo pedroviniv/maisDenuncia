@@ -11,6 +11,7 @@ import br.edu.ifpb.bdnc.maisdenuncia.entities.Denuncia;
 import br.edu.ifpb.bdnc.maisdenuncia.enums.TipoDenuncia;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -100,6 +101,7 @@ public class QueryDenunciaBo
     public List<Denuncia> lastOf(int number){
         List<Denuncia> lastOf = new ArrayList<>();
         List<Denuncia> all = denunciaDao.listar();
+        Collections.reverse(all);
         if(all.size() < number){
             return all;
         }else{
